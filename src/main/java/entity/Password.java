@@ -20,6 +20,9 @@ public class Password {
     @Column(name = "Pass")
     private String pass;
 
+    @Column(name = "Login")
+    private String Login;
+
     public Password() {
     }
 
@@ -45,6 +48,10 @@ public class Password {
         return pass;
     }
 
+    public String getLogin() {
+        return Login;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -55,5 +62,9 @@ public class Password {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    public void setLogin(String login) {
+        Login = login;
     }
 }
