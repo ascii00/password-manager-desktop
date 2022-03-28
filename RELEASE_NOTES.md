@@ -1,8 +1,13 @@
 # Release Notes
 
 ## 0.4.0-SNAPSHOT
-*   GUI
+
+* GUI
+
 ## 0.3.0-SNAPSHOT
-*   only hardware
-## 0.1.0-SNAPSHOT 
-*   application skeleton
+
+* only hardware
+
+## 0.1.0-SNAPSHOT
+
+* application skeleton

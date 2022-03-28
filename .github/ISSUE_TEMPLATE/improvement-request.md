@@ -1,9 +1,7 @@
 ---
-name: Improvement request
-about: 'Suggest an improvment for this project '
+name: Improvement request about: 'Suggest an improvment for this project '
 title: "[IMPROVEMENT]"
-labels: enhancement
-assignees: ascii00
+labels: enhancement assignees: ascii00
 
 ---
 

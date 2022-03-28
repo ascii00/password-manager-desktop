@@ -1,4 +1,4 @@
-package entity;
+package com.github.passwordmanager.entity;
 
 import javax.persistence.*;
 

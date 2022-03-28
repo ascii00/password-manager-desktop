@@ -1,4 +1,6 @@
-import entity.Password;
+package com.github.passwordmanager;
+
+import com.github.passwordmanager.entity.Password;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -6,12 +8,12 @@ import java.util.List;
 
 public class Hibernate {
 
-    private SessionFactory factory;
+    private final SessionFactory factory;
 
     public Hibernate() {
         this.factory = new Configuration()
-                .configure("hibernate.cfg.xml")
-                .addAnnotatedClass(entity.Password.class)
+                .configure("com/github/passwordmanager/hibernate.cfg.xml")
+                .addAnnotatedClass(Password.class)
                 .buildSessionFactory();
     }
 
@@ -19,36 +21,36 @@ public class Hibernate {
         factory.close();
     }
 
-    public void addNewPassword(Password password){
+    public void addNewPassword(Password password) {
         try (Session session = factory.getCurrentSession()) {
             session.beginTransaction();
             session.save(password);
             session.getTransaction().commit();
             session.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             factory.close();
             e.printStackTrace();
         }
     }
 
-    public List<Password> getAllPasswords(){
+    public List<Password> getAllPasswords() {
 
         List<Password> passwords = null;
 
         try (Session session = factory.getCurrentSession()) {
             session.beginTransaction();
             passwords = session.createQuery("FROM Password")
-                            .getResultList();
+                    .getResultList();
             session.getTransaction().commit();
             session.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             factory.close();
             e.printStackTrace();
         }
         return passwords;
     }
 
-    public List<Password> getPasswordsFromCategory(String category){
+    public List<Password> getPasswordsFromCategory(String category) {
         List<Password> passwords = null;
 
         try (Session session = factory.getCurrentSession()) {
@@ -60,27 +62,27 @@ public class Hibernate {
                     .getResultList();
             session.getTransaction().commit();
             session.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             factory.close();
             e.printStackTrace();
         }
         return passwords;
     }
 
-    public void deletePassword(long id){
+    public void deletePassword(long id) {
         try (Session session = factory.getCurrentSession()) {
             session.beginTransaction();
             Password password = session.get(Password.class, id);
             session.delete(password);
             session.getTransaction().commit();
             session.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             factory.close();
             e.printStackTrace();
         }
     }
 
-    public void deleteCategoryOfPasswords(String category){
+    public void deleteCategoryOfPasswords(String category) {
         List<Password> passwords = getPasswordsFromCategory(category);
 
         for (Password password : passwords)
