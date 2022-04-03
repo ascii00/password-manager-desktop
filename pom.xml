@@ -75,7 +75,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.github.passwordmanager.passwordmanagerdesktop/com.github.passwordmanager.PMApplication
+                                com.github.passwordmanager.passwordmanagerdesktop/com.github.passwordmanager.Application
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

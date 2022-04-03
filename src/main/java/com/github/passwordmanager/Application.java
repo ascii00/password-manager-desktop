@@ -1,19 +1,22 @@
 package com.github.passwordmanager;
 
-import javafx.application.Application;
+import com.github.passwordmanager.controllers.MainController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class PMApplication extends Application {
+public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(PMApplication.class.getResource("view.fxml"));
+        MainController.setMainStage(stage);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("mainView.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 720, 450);
         stage.setTitle("Password Manager");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

@@ -6,11 +6,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import java.util.List;
 
-public class Hibernate {
+public class DAO {
 
     private final SessionFactory factory;
 
-    public Hibernate() {
+    public DAO() {
         this.factory = new Configuration()
                 .configure("com/github/passwordmanager/hibernate.cfg.xml")
                 .addAnnotatedClass(Password.class)
