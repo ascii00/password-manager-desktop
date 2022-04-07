@@ -21,15 +21,16 @@ public class Password {
     private String pass;
 
     @Column(name = "Login")
-    private String Login;
+    private String login;
 
     public Password() {
     }
 
-    public Password(String name, String category, String pass) {
+    public Password(String name, String category, String pass, String login) {
         this.name = name;
         this.category = category;
         this.pass = pass;
+        this.login = login;
     }
 
     public Long getId() {
@@ -49,7 +50,7 @@ public class Password {
     }
 
     public String getLogin() {
-        return Login;
+        return login;
     }
 
     public void setName(String name) {
@@ -65,6 +66,6 @@ public class Password {
     }
 
     public void setLogin(String login) {
-        Login = login;
+        login = login;
     }
 }

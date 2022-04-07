@@ -1,13 +1,17 @@
 package com.github.passwordmanager.controllers;
 
+import com.github.passwordmanager.DAO;
+import com.github.passwordmanager.entity.Password;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -16,11 +20,21 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class MainController {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class MainController implements Initializable {
     private static Stage mainStage;
+    private static DAO dao;
 
     public static void setMainStage(Stage stage) {
         mainStage = stage;
+    }
+
+    public static void setDAO(DAO daoClass){
+        dao = daoClass;
     }
 
     @FXML
@@ -30,7 +44,7 @@ public class MainController {
     private Button addNewPassword;
 
     @FXML
-    private ListView<?> categoryList;
+    private ListView<String> categoryList;
 
     @FXML
     private Button deleteSelectedPassword;
@@ -42,17 +56,41 @@ public class MainController {
     private MenuItem fileClose;
 
     @FXML
-    private TableView<?> passwordList;
+    private TableView<Password> passwordList;
+
+    @FXML
+    private TableColumn<Password, String> loginColumn;
+
+    @FXML
+    private TableColumn<Password, String> passwordColumn;
+
+    @FXML
+    private TableColumn<Password, String> serviceColumn;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        categoryList.getItems().addAll("Games", "Email", "Social Networks", "Programs", "Job", "Others");
+
+        loginColumn.setCellValueFactory(new PropertyValueFactory<Password, String>("login"));
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<Password, String>("pass"));
+        serviceColumn.setCellValueFactory(new PropertyValueFactory<Password, String>("name"));
+
+        List<Password> passwords = dao.getAllPasswords();
+        passwordList.getItems().addAll(passwords);
+    }
 
     @FXML
     void addNewPassword(MouseEvent event) throws Exception {
 
         AnchorPane secondaryLayout = new AnchorPane();
-        Scene secondScene = new Scene(secondaryLayout, 300, 200);
+        Scene secondScene = new Scene(secondaryLayout, 300, 250);
 
         TextField loginField = new TextField();
         TextField passwordField = new TextField();
         TextField serviceField = new TextField();
+
+        ChoiceBox<String> choiceCategory = new ChoiceBox<>();
+        choiceCategory.getItems().addAll(categoryList.getItems());
 
         Text loginText = new Text("Login:");
         Text passwordText = new Text("Password:");
@@ -74,10 +112,12 @@ public class MainController {
         AnchorPane.setRightAnchor(loginField, 20.0);
         AnchorPane.setRightAnchor(passwordField, 20.0);
         AnchorPane.setRightAnchor(serviceField, 20.0);
+        AnchorPane.setRightAnchor(choiceCategory, 20.0);
 
         AnchorPane.setTopAnchor(loginField, 10.0);
         AnchorPane.setTopAnchor(passwordField, 60.0);
         AnchorPane.setTopAnchor(serviceField, 110.0);
+        AnchorPane.setTopAnchor(choiceCategory, 160.0);
 
         secondaryLayout.getChildren().addAll(
                 loginField
@@ -86,7 +126,8 @@ public class MainController {
                 , loginText
                 , passwordText
                 , serviceText
-                , okButton);
+                , okButton
+                , choiceCategory);
 
         // New window (Stage)
         Stage newWindow = new Stage();
@@ -95,7 +136,13 @@ public class MainController {
         newWindow.setScene(secondScene);
 
         okButton.setOnAction(actionEvent -> {
-            System.out.println(1);
+            if (!loginField.getText().equals("") || !passwordField.getText().equals(""))
+                dao.addNewPassword(
+                        new Password(
+                                serviceField.getText()
+                                , choiceCategory.getValue()
+                                , passwordField.getText()
+                                , loginField.getText()));
             newWindow.close();
         });
 
@@ -114,7 +161,6 @@ public class MainController {
 
     @FXML
     void deleteSelectedPassword(MouseEvent event) {
-
     }
 
     @FXML

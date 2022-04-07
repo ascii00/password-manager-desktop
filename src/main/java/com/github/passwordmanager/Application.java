@@ -8,10 +8,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Application extends javafx.application.Application {
+
     @Override
     public void start(Stage stage) throws IOException {
         MainController.setMainStage(stage);
-
+        MainController.setDAO(new DAO());
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("mainView.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 720, 450);
         stage.setTitle("Password Manager");
