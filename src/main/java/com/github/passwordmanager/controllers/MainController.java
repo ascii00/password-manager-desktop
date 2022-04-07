@@ -11,15 +11,22 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +35,7 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     private static Stage mainStage;
     private static DAO dao;
+    private static String currentCategory = "ALL";
 
     public static void setMainStage(Stage stage) {
         mainStage = stage;
@@ -69,7 +77,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        categoryList.getItems().addAll("Games", "Email", "Social Networks", "Programs", "Job", "Others");
+        categoryList.getItems().addAll("ALL", "Games", "Email", "Social Networks", "Programs", "Job", "Others");
 
         loginColumn.setCellValueFactory(new PropertyValueFactory<Password, String>("login"));
         passwordColumn.setCellValueFactory(new PropertyValueFactory<Password, String>("pass"));
@@ -156,31 +164,103 @@ public class MainController implements Initializable {
 
     @FXML
     void categoryShow(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            String selectedCategory = categoryList.getSelectionModel().getSelectedItem();
+            List<Password> passwords = dao.getPasswordsFromCategory(selectedCategory);
 
+            currentCategory = selectedCategory;
+
+            passwordList.getItems().clear();
+            passwordList.getItems().addAll(passwords);
+        }
     }
 
     @FXML
     void deleteSelectedPassword(MouseEvent event) {
+        Password selectedItem = passwordList.getSelectionModel().getSelectedItem();
+        if (selectedItem == null)
+            return;
+        dao.deletePassword(selectedItem);
+        passwordList.getItems().remove(selectedItem);
     }
 
     @FXML
     void deleteTheWholeCategory(MouseEvent event) {
 
+        String selectedCategory = categoryList.getSelectionModel().getSelectedItem();
+        if (selectedCategory == null || selectedCategory.equals("ALL"))
+            return;
+
+        AnchorPane secondaryLayout = new AnchorPane();
+        Scene secondScene = new Scene(secondaryLayout, 300, 100);
+
+        Text text = new Text("Delete all passwords from category - " +
+                categoryList.getSelectionModel().getSelectedItem() +
+                "?");
+        Button yesButton = new Button("Yes");
+        Button noButton = new Button("No");
+
+        AnchorPane.setLeftAnchor(text,10.0);
+        AnchorPane.setTopAnchor(text,10.0);
+        AnchorPane.setBottomAnchor(yesButton,20.0);
+        AnchorPane.setBottomAnchor(noButton,20.0);
+        AnchorPane.setLeftAnchor(noButton,100.0);
+        AnchorPane.setRightAnchor(yesButton,100.0);
+
+        secondaryLayout.getChildren().addAll(
+                text
+                ,yesButton
+                ,noButton);
+
+        Stage newWindow = new Stage();
+        newWindow.initModality(Modality.APPLICATION_MODAL);
+        newWindow.setTitle("Delete the whole category");
+        newWindow.setScene(secondScene);
+
+        noButton.setOnAction(actionEvent -> {
+            newWindow.close();
+        });
+
+        yesButton.setOnAction(actionEvent -> {
+            List<Password> passwords = dao.getPasswordsFromCategory(selectedCategory);
+
+            for (Password password : passwords)
+                dao.deletePassword(password);
+
+            passwords = dao.getPasswordsFromCategory(currentCategory);
+            passwordList.getItems().clear();
+            passwordList.getItems().addAll(passwords);
+            newWindow.close();
+        });
+
+        newWindow.setX(mainStage.getX() + 200);
+        newWindow.setY(mainStage.getY() + 100);
+        newWindow.setResizable(false);
+
+        newWindow.show();
     }
 
     @FXML
     void fileClose(ActionEvent event) {
-
+        System.exit(0);
     }
 
     @FXML
     void helpAbout(ActionEvent event) {
+        TextArea textArea = new TextArea();
+        textArea.setText("bla bla bla");
+        ScrollPane scrollPane = new ScrollPane(textArea);
 
+        Scene secondScene = new Scene(scrollPane, 300, 200);
+        Stage newWindow = new Stage();
+        newWindow.initModality(Modality.APPLICATION_MODAL);
+        newWindow.setTitle("About");
+        newWindow.setScene(secondScene);
+
+        newWindow.setX(mainStage.getX() + 200);
+        newWindow.setY(mainStage.getY() + 100);
+        newWindow.setResizable(false);
+
+        newWindow.show();
     }
-
-    @FXML
-    void passwordChosen(MouseEvent event) {
-
-    }
-
 }

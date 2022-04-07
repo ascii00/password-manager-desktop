@@ -26,22 +26,22 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <SplitPane dividerPositions="0.31450534759358284" layoutX="175.0" layoutY="85.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <SplitPane dividerPositions="0.27272727272727265" layoutX="175.0" layoutY="85.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
                         <AnchorPane prefHeight="373.6" prefWidth="185.6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <Button fx:id="deleteTheWholeCategory" layoutX="13.0" layoutY="202.0" mnemonicParsing="false" onMouseClicked="#deleteTheWholeCategory" prefHeight="35.0" prefWidth="158.0" text="Delete the whole category" />
-                                <Button fx:id="addNewPassword" layoutX="13.0" layoutY="101.0" mnemonicParsing="false" onMouseClicked="#addNewPassword" prefHeight="35.0" prefWidth="158.0" text="Add new password" textAlignment="CENTER" />
-                                <Button fx:id="deleteSelectedPassword" layoutX="13.0" layoutY="151.0" mnemonicParsing="false" onMouseClicked="#deleteSelectedPassword" prefHeight="35.0" prefWidth="158.0" text="Delete selected password" textAlignment="CENTER" />
+                                <Button fx:id="deleteTheWholeCategory" layoutX="14.0" layoutY="229.0" mnemonicParsing="false" onMouseClicked="#deleteTheWholeCategory" prefHeight="35.0" prefWidth="158.0" text="Delete the whole category" />
+                                <Button fx:id="addNewPassword" layoutX="14.0" layoutY="128.0" mnemonicParsing="false" onMouseClicked="#addNewPassword" prefHeight="35.0" prefWidth="158.0" text="Add new password" textAlignment="CENTER" />
+                                <Button fx:id="deleteSelectedPassword" layoutX="14.0" layoutY="178.0" mnemonicParsing="false" onMouseClicked="#deleteSelectedPassword" prefHeight="35.0" prefWidth="158.0" text="Delete selected password" textAlignment="CENTER" />
                             </children>
                         </AnchorPane>
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
-                        <SplitPane dividerPositions="0.36881720430107523" layoutX="-11.0" layoutY="83.0" orientation="VERTICAL" prefHeight="373.6" prefWidth="424.8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.4118279569892473" layoutX="-11.0" layoutY="83.0" orientation="VERTICAL" prefHeight="373.6" prefWidth="424.8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <items>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                     <children>
@@ -50,7 +50,7 @@
                                 </AnchorPane>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                     <children>
-                                        <TableView fx:id="passwordList" layoutX="-1.0" onMouseClicked="#passwordChosen" prefHeight="232.0" prefWidth="423.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
+                                        <TableView fx:id="passwordList" layoutX="-1.0" prefHeight="232.0" prefWidth="423.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
                                             <columns>
                                                 <TableColumn fx:id="loginColumn" prefWidth="114.40002137422562" text="Login " />
                                                 <TableColumn fx:id="passwordColumn" minWidth="0.0" prefWidth="147.2000274658203" text="Password" />

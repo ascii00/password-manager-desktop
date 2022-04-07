@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.8.3-SNAPSHOT
+
+* All basic functional is implemented
+
 ## 0.4.0-SNAPSHOT
 
 * GUI

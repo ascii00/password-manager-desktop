@@ -51,6 +51,9 @@ public class DAO {
     }
 
     public List<Password> getPasswordsFromCategory(String category) {
+        if (category.equals("ALL"))
+            return getAllPasswords();
+
         List<Password> passwords = null;
 
         try (Session session = factory.getCurrentSession()) {
@@ -82,10 +85,45 @@ public class DAO {
         }
     }
 
+    public void deletePassword(Password passwordToDelete){
+        long passwordID = getPasswordId(passwordToDelete);
+        deletePassword(passwordID);
+    }
+
     public void deleteCategoryOfPasswords(String category) {
         List<Password> passwords = getPasswordsFromCategory(category);
 
         for (Password password : passwords)
             deletePassword(password.getId());
+    }
+
+    public long getPasswordId(Password password){
+        long id = 0;
+        String login = password.getLogin();
+        String pass = password.getPass();
+        String service = password.getName();
+        String category = password.getCategory();
+
+        String hql = "SELECT id FROM Password WHERE " +
+                "name = :paramName AND " +
+                "category = :paramCategory AND " +
+                "pass = :paramPass AND " +
+                "login = :paramLogin";
+
+        try (Session session = factory.getCurrentSession()) {
+            session.beginTransaction();
+            id = (Long) session.createQuery(hql)
+                    .setParameter("paramName", service)
+                    .setParameter("paramCategory", category)
+                    .setParameter("paramPass", pass)
+                    .setParameter("paramLogin", login)
+                    .getSingleResult();
+            session.getTransaction().commit();
+            session.close();
+        } catch (Exception e) {
+            factory.close();
+            e.printStackTrace();
+        }
+        return id;
     }
 }
