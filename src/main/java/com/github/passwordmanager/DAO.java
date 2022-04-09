@@ -17,10 +17,6 @@ public class DAO {
                 .buildSessionFactory();
     }
 
-    public void closeFactory() {
-        factory.close();
-    }
-
     public void addNewPassword(Password password) {
         try (Session session = factory.getCurrentSession()) {
             session.beginTransaction();
@@ -47,6 +43,10 @@ public class DAO {
             factory.close();
             e.printStackTrace();
         }
+        passwords.forEach(password -> {
+           if (password.getPass().length() > 2)
+               password.setPass(AESEncryption.decrypt(password.getPass()));
+        });
         return passwords;
     }
 
@@ -69,6 +69,11 @@ public class DAO {
             factory.close();
             e.printStackTrace();
         }
+
+        passwords.forEach(password -> {
+            if (password.getPass().length() > 2)
+                password.setPass(AESEncryption.decrypt(password.getPass()));
+        });
         return passwords;
     }
 
@@ -88,13 +93,6 @@ public class DAO {
     public void deletePassword(Password passwordToDelete){
         long passwordID = getPasswordId(passwordToDelete);
         deletePassword(passwordID);
-    }
-
-    public void deleteCategoryOfPasswords(String category) {
-        List<Password> passwords = getPasswordsFromCategory(category);
-
-        for (Password password : passwords)
-            deletePassword(password.getId());
     }
 
     public long getPasswordId(Password password){

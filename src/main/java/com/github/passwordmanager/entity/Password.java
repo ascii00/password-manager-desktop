@@ -33,10 +33,6 @@ public class Password {
         this.login = login;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getName() {
         return name;
     }
@@ -57,15 +53,7 @@ public class Password {
         this.name = name;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public void setPass(String pass) {
         this.pass = pass;
-    }
-
-    public void setLogin(String login) {
-        login = login;
     }
 }

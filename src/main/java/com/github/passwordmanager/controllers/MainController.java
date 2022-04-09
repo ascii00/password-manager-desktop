@@ -1,34 +1,23 @@
 package com.github.passwordmanager.controllers;
 
+import com.github.passwordmanager.AESEncryption;
 import com.github.passwordmanager.DAO;
 import com.github.passwordmanager.entity.Password;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -46,22 +35,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private MenuItem HelpAbout;
-
-    @FXML
-    private Button addNewPassword;
-
-    @FXML
     private ListView<String> categoryList;
-
-    @FXML
-    private Button deleteSelectedPassword;
-
-    @FXML
-    private Button deleteTheWholeCategory;
-
-    @FXML
-    private MenuItem fileClose;
 
     @FXML
     private TableView<Password> passwordList;
@@ -79,16 +53,16 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         categoryList.getItems().addAll("ALL", "Games", "Email", "Social Networks", "Programs", "Job", "Others");
 
-        loginColumn.setCellValueFactory(new PropertyValueFactory<Password, String>("login"));
-        passwordColumn.setCellValueFactory(new PropertyValueFactory<Password, String>("pass"));
-        serviceColumn.setCellValueFactory(new PropertyValueFactory<Password, String>("name"));
+        loginColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<>("pass"));
+        serviceColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         List<Password> passwords = dao.getAllPasswords();
         passwordList.getItems().addAll(passwords);
     }
 
     @FXML
-    void addNewPassword(MouseEvent event) throws Exception {
+    void addNewPassword() {
 
         AnchorPane secondaryLayout = new AnchorPane();
         Scene secondScene = new Scene(secondaryLayout, 300, 250);
@@ -149,8 +123,11 @@ public class MainController implements Initializable {
                         new Password(
                                 serviceField.getText()
                                 , choiceCategory.getValue()
-                                , passwordField.getText()
+                                , AESEncryption.encrypt(passwordField.getText())
                                 , loginField.getText()));
+            List<Password> passwords = dao.getPasswordsFromCategory(currentCategory);
+            passwordList.getItems().clear();
+            passwordList.getItems().addAll(passwords);
             newWindow.close();
         });
 
@@ -176,7 +153,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    void deleteSelectedPassword(MouseEvent event) {
+    void deleteSelectedPassword() {
         Password selectedItem = passwordList.getSelectionModel().getSelectedItem();
         if (selectedItem == null)
             return;
@@ -185,8 +162,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    void deleteTheWholeCategory(MouseEvent event) {
-
+    void deleteTheWholeCategory() {
         String selectedCategory = categoryList.getSelectionModel().getSelectedItem();
         if (selectedCategory == null || selectedCategory.equals("ALL"))
             return;
@@ -217,9 +193,7 @@ public class MainController implements Initializable {
         newWindow.setTitle("Delete the whole category");
         newWindow.setScene(secondScene);
 
-        noButton.setOnAction(actionEvent -> {
-            newWindow.close();
-        });
+        noButton.setOnAction(actionEvent -> newWindow.close());
 
         yesButton.setOnAction(actionEvent -> {
             List<Password> passwords = dao.getPasswordsFromCategory(selectedCategory);
@@ -241,17 +215,21 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    void fileClose(ActionEvent event) {
+    void fileClose() {
         System.exit(0);
     }
 
     @FXML
-    void helpAbout(ActionEvent event) {
+    void helpAbout() {
         TextArea textArea = new TextArea();
-        textArea.setText("bla bla bla");
-        ScrollPane scrollPane = new ScrollPane(textArea);
+        textArea.setText("""
+                Free and open-source password manager.
+                It stores usernames, passwords and other fields in the MySQL database.
+                
+                For more information follow the link:
+                https://github.com/ascii00/password-manager-desktop.git""");
 
-        Scene secondScene = new Scene(scrollPane, 300, 200);
+        Scene secondScene = new Scene(textArea, 400, 150);
         Stage newWindow = new Stage();
         newWindow.initModality(Modality.APPLICATION_MODAL);
         newWindow.setTitle("About");
