@@ -1,5 +1,7 @@
 # Release Notes
 
+## 1.0.0
+
 ## 0.8.3-SNAPSHOT
 
 * All basic functional is implemented
