@@ -52,17 +52,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/sun.misc/BASE64Decoder -->
-        <dependency>
-            <groupId>sun.misc</groupId>
-            <artifactId>BASE64Decoder</artifactId>
-            <version>unknown</version>
-        </dependency>
-
-
-
-
     </dependencies>
 
     <build>
